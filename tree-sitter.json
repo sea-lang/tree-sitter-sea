@@ -1,0 +1,40 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "sea",
+      "camelcase": "Sea",
+      "title": "Sea",
+      "scope": "source.sea",
+      "file-types": [
+        "sea"
+      ],
+      "injection-regex": "^sea$",
+      "class-name": "TreeSitterSea"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Sea grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Emmeline Coats",
+        "email": "me@emmelinecoats.com",
+        "url": "https://emmelinecoats.com/"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/sea-lang/tree-sitter-sea"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}
