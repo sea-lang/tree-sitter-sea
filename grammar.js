@@ -221,7 +221,13 @@ module.exports = grammar({
         ),
       ),
 
-    raw: ($) => seq("raw", "[", repeat1(choice(/\[.+\]/, /[^\[\]]+/)), "]"),
+    raw: ($) =>
+      seq(
+        "raw",
+        "[",
+        field("rawtext", repeat1(choice(/\[.+\]/, /[^\[\]]+/))),
+        "]",
+      ),
 
     type: ($) =>
       choice(
