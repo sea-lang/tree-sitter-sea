@@ -20,7 +20,7 @@ fun main(): int {
 		new User("Gandalf", 50000),
 	]
 
-	for i from 0 to users.len -> greet(users[i])
+	for i in 0 to users.len -> greet(users[i])
 
 	ret 0
 }

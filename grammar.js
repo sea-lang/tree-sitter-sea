@@ -27,8 +27,6 @@ module.exports = grammar({
   rules: {
     source_file: ($) => repeat($._top_level_statement),
 
-    comment: ($) => choice(seq("//", /.*/), seq("/*", /.*/, "*/")),
-
     // Top level statements
     _top_level_statement: ($) =>
       choice(
@@ -116,9 +114,9 @@ module.exports = grammar({
       seq(
         "for",
         choice(
+          seq($.identifier, "in", $._expression, "to", $._expression),
           seq($._expression, ";", $._expression, ";", $._expression),
           seq($._expression),
-          seq($.identifier, "in", $._expression, "to", $._expression),
         ),
         $.block,
       ),
@@ -129,7 +127,6 @@ module.exports = grammar({
         $.expr_group,
         $.expr_number,
         $.expr_string,
-        $.expr_c_string,
         $.expr_char,
         $.expr_bool,
         $.expr_identifier,
@@ -144,7 +141,6 @@ module.exports = grammar({
     expr_group: ($) => seq("(", $._expression, ")"),
     expr_number: ($) => $.number,
     expr_string: ($) => $.string,
-    expr_c_string: ($) => $.c_string,
     expr_char: ($) => $.char,
     expr_bool: ($) => choice("true", "false"),
     expr_identifier: ($) => $.identifier,
@@ -241,8 +237,19 @@ module.exports = grammar({
 
     identifier: ($) => /[a-zA-Z_$][a-zA-Z_$0-9]*/,
     number: ($) => /[0-9_]+(\.[0-9_]+)?/,
-    string: ($) => /".*"/,
-    c_string: ($) => /c".*"/,
+    string: ($) =>
+      seq(
+        choice('c"', '"'),
+        repeat(
+          choice(
+            alias(token.immediate(prec(1, /[^\\"\n]+/)), $.string_content),
+            $.escape_sequence,
+          ),
+        ),
+        '"',
+      ),
+    escape_sequence: (_) => token(prec(1, /\\./)),
+
     char: ($) => /`.*`/,
 
     definition_list: ($) =>
@@ -255,6 +262,15 @@ module.exports = grammar({
           ),
         ),
         ")",
+      ),
+
+    // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+    comment: (_) =>
+      token(
+        choice(
+          seq("//", /(\\+(.|\r?\n)|[^\\\n])*/),
+          seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/"),
+        ),
       ),
   },
 });
