@@ -684,6 +684,21 @@
     }
   },
   {
+    "type": "hashtag",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "raw",
     "named": true,
     "fields": {}
@@ -697,6 +712,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "hashtag",
+          "named": true
+        },
         {
           "type": "raw",
           "named": true
@@ -1297,6 +1316,10 @@
   },
   {
     "type": "!=",
+    "named": false
+  },
+  {
+    "type": "#",
     "named": false
   },
   {

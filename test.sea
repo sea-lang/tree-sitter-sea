@@ -4,12 +4,15 @@ rec User(name: String, age: int)
 
 fun greet(user: User) -> printf(c"Hello, %.*s!\n", user.name.len, user.name.str)
 
-//raw[
-//#include <stdio.h>
-//int main() {
-//	puts("bozo!");
-//}
-//]
+raw[
+#include <stdio.h>
+int main() {
+	puts("bozo!");
+}
+]
+
+#inline
+fun test() {}
 
 fun main(): int {
 	let users: User[] = [

@@ -41,6 +41,7 @@ module.exports = grammar({
         $.top_tag_rec,
         $.top_pragma,
         $.raw,
+        $.hashtag,
       ),
     top_use: ($) =>
       seq(
@@ -117,7 +118,7 @@ module.exports = grammar({
         choice(
           seq($._expression, ";", $._expression, ";", $._expression),
           seq($._expression),
-          seq($.identifier, "from", $._expression, "to", $._expression),
+          seq($.identifier, "in", $._expression, "to", $._expression),
         ),
         $.block,
       ),
@@ -206,6 +207,19 @@ module.exports = grammar({
     // Misc
     block: ($) =>
       choice(seq("{", repeat($._statement), "}"), seq("->", $._statement)),
+
+    hashtag: ($) =>
+      seq(
+        "#",
+        choice(
+          $.identifier,
+          seq(
+            "(",
+            repeat(seq($.identifier, repeat(seq(",", $.identifier)))),
+            ")",
+          ),
+        ),
+      ),
 
     raw: ($) => seq("raw", "[", repeat1(choice(/\[.+\]/, /[^\[\]]+/)), "]"),
 
